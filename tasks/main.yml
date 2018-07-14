@@ -1,0 +1,22 @@
+- name: Remove nodejs if it's installed
+  become: yes
+  apt:
+    name: nodejs
+    state: absent
+
+- name: Add nodesource official GPG key
+  become: true
+  apt_key:
+    data: "{{ lookup('file', 'nodesource.asc') }}"
+    state: present
+
+
+- name: Run the script to add node8 to apt repo
+  script: setup_8.x
+  become: yes
+
+- name: Install nodejs
+  become: yes
+  apt:
+    name: nodejs
+    state: present
